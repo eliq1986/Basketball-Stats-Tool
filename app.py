@@ -1,18 +1,19 @@
 import constants
 
-basketball_emoji = "\U0001F3C0"
 
+def prints_intro_message():
+    basketball_emoji = "\U0001F3C0"
+    print("""
+    {basketball} BASKETBALL TEAM STATS TOOL {basketball}
 
-print("""
-{basketball} BASKETBALL TEAM STATS TOOL {basketball}
+              --- Menu ---
 
-          --- Menu ---
+    Here are your choices:
+     1) Display Team Stats
+     2) Quit
 
-Here are your choices:
-1) Display Team Stats
-2) Quit
+    """.format(basketball = basketball_emoji))
 
-""".format(basketball = basketball_emoji))
 
 def return_bool(experience):
     """Returns a bool depending experience arg passed in"""
@@ -38,6 +39,7 @@ def format_players_list():
 
 
 def print_teams():
+    print("\n")
     for index, team in enumerate(constants.TEAMS):
         print(f"{index + 1}) {team}")
 
@@ -46,20 +48,33 @@ def format_teams():
     player_list = format_players_list()
     return [player_list[:6], player_list[6:12], player_list[12:]]
 
+
+def get_player_names(team):
+    player_names = []
+    for index in team:
+        for key,value in index.items():
+            if key == "name":
+                player_names.append(value)
+    return player_names
+
+
 def print_team_stats(index,team):
-    team_selected = team[index - 1]
+    player_names_list = get_player_names(team[index - 1])
     team_name = constants.TEAMS[index - 1]
     print("""
 Team: {} Stats
 --------------------
 Total Players: {}
 
-    """.format(team_name, len(team_selected)))
+Players on Team:
+  {}
+    """.format(team_name, len(player_names_list), ', '.join(player_names_list)))
 
 
 def get_team_stats():
     while True:
         try:
+            print("\n")
             select_team_index = int(input("Please enter a number 1-3 > "))
             if select_team_index in range(1,4):
                 team_list = format_teams()
@@ -70,18 +85,24 @@ def get_team_stats():
             print("Sorry but it must be a number...")
 
 
-while True:
-    try:
-        response = int(input("Enter an option > "))
-        if response == 1:
-            print_teams()
-            get_team_stats()
-        else:
-            print("Thanks for checking out the teams.")
+def quit_or_continue():
+    response = int(input("Enter an option > "))
+    if response == 1:
+        print_teams()
+        get_team_stats()
+    else:
+        print("Thanks for checking out the teams.")
+
+
+def run_app():
+    prints_intro_message()
+    while True:
+        try:
+            quit_or_continue()
             break
-    except ValueError:
-        print("Letters are invalid. Please enter a number.")
+        except ValueError:
+            print("Letters are invalid. Please enter a number.")
 
 
 if __name__ == "__main__":
-    pass
+    run_app()
