@@ -44,10 +44,17 @@ def print_teams():
 
 def format_teams():
     player_list = format_players_list()
-    return [player_list[:6],player_list[6:12], player_list[12:]]
+    return [player_list[:6], player_list[6:12], player_list[12:]]
 
 def print_team_stats(index,team):
-    print("Hello Wqorld")
+    team_selected = team[index - 1]
+    team_name = constants.TEAMS[index - 1]
+    print("""
+Team: {} Stats
+--------------------
+Total Players: {}
+
+    """.format(team_name, len(team_selected)))
 
 
 def get_team_stats():
