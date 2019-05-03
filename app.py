@@ -22,8 +22,9 @@ def return_bool(experience):
     return False
 
 
-def format_players_list():
-    player_list = []
+def format_players_dict():
+    experienced_players = []
+    inexperienced_players = []
     for player_index in constants.PLAYERS:
         player_dict = {}
         for key,value in player_index.items():
@@ -32,10 +33,15 @@ def format_players_list():
                 player_dict[key] = height_int
             elif key == "experience":
                 player_dict[key] = return_bool(value)
+            elif key == "guardians":
+                 player_dict[key] = value.split("and")
             else:
                 player_dict[key] = value
-        player_list.append(player_dict)
-    return player_list
+        if player_dict["experience"] == False:
+            inexperienced_players.append(player_dict)
+        else:
+            experienced_players.append(player_dict)
+    return experienced_players + inexperienced_players
 
 
 def print_teams():
@@ -45,8 +51,13 @@ def print_teams():
 
 
 def format_teams():
-    player_list = format_players_list()
-    return [player_list[:6], player_list[6:12], player_list[12:]]
+    panthers = []
+    bandits = []
+    warriors = []
+    player_list = format_players_dict()
+    experienced_players = player_list[:9]
+    inexperienced_players = player_list[9:]
+    return [experienced_players[:3] + inexperienced_players[:3], experienced_players[3:6] + inexperienced_players[3:6], experienced_players[6:] + inexperienced_players[6:]]
 
 
 def get_player_names(team):
@@ -79,6 +90,7 @@ def get_team_stats():
             if select_team_index in range(1,4):
                 team_list = format_teams()
                 print_team_stats(select_team_index, team_list)
+                run_app()
             else:
                 print("Sorry but needs to be either 1,2 or 3")
         except:
