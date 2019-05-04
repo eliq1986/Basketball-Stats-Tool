@@ -6,12 +6,10 @@ def prints_intro_message():
     print("""
     {basketball} BASKETBALL TEAM STATS TOOL {basketball}
 
-              --- Menu ---
-
+             --- Menu ---
     Here are your choices:
      1) Display Team Stats
      2) Quit
-
     """.format(basketball = basketball_emoji))
 
 
@@ -23,8 +21,9 @@ def return_bool(experience):
 
 
 def format_players_dict():
-    experienced_players = []
+
     inexperienced_players = []
+    experienced_players = []
     for player_index in constants.PLAYERS:
         player_dict = {}
         for key,value in player_index.items():
@@ -60,26 +59,41 @@ def format_teams():
     return [experienced_players[:3] + inexperienced_players[:3], experienced_players[3:6] + inexperienced_players[3:6], experienced_players[6:] + inexperienced_players[6:]]
 
 
-def get_player_names(team):
-    player_names = []
+def get_player_info(team):
+    player_dict = {
+    "names":[],
+    "inexperienced_players": [],
+    "experienced_players":[],
+    "heights": 0
+
+    }
     for index in team:
         for key,value in index.items():
             if key == "name":
-                player_names.append(value)
-    return player_names
+                player_dict["names"].append(value)
+            if key == "experience" and value == True:
+                player_dict["experienced_players"].append(index)
+            elif key == "experience" and value == False:
+                player_dict["inexperienced_players"].append(index)
+            if key == "height":
+                player_dict["heights"] += value
+    player_dict["heights"] = player_dict["heights"] // len(team)
+    return player_dict
 
 
 def print_team_stats(index,team):
-    player_names_list = get_player_names(team[index - 1])
+    player_names_dict = get_player_info(team[index - 1])
     team_name = constants.TEAMS[index - 1]
     print("""
 Team: {} Stats
 --------------------
 Total Players: {}
-
 Players on Team:
   {}
-    """.format(team_name, len(player_names_list), ', '.join(player_names_list)))
+ Experienced Players: {}
+ Inexperienced Players: {}
+ Average Height: {}
+    """.format(team_name, len(player_names_dict["names"]), ', '.join(player_names_dict["names"]), len(player_names_dict["experienced_players"]), len(player_names_dict["inexperienced_players"]), player_names_dict["heights"]))
 
 
 def get_team_stats():
