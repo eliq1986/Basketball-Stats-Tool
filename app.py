@@ -19,6 +19,9 @@ def return_bool(experience):
         return True
     return False
 
+def return_integer(value):
+    return int(value.split()[0:1][0])
+
 
 def format_players_dict():
     inexperienced_players = []
@@ -27,8 +30,7 @@ def format_players_dict():
         player_dict = {}
         for key,value in player_index.items():
             if key == "height":
-                height_int = int(value.split()[0:1][0])
-                player_dict[key] = height_int
+                player_dict[key] = return_integer(value)
             elif key == "experience":
                 player_dict[key] = return_bool(value)
             elif key == "guardians":
@@ -49,9 +51,6 @@ def print_teams():
 
 
 def format_teams():
-    panthers = []
-    bandits = []
-    warriors = []
     player_list = format_players_dict()
     experienced_players = player_list[:9]
     inexperienced_players = player_list[9:]
@@ -119,8 +118,9 @@ def quit_or_continue():
             get_team_stats()
         elif response == 2:
             print("Thanks for checking out the teams.")
-        else:
             break
+        elif response != 1 or response !=2:
+            print("Please select 1 or 2")
 
 
 def run_app():
