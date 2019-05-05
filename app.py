@@ -21,7 +21,6 @@ def return_bool(experience):
 
 
 def format_players_dict():
-
     inexperienced_players = []
     experienced_players = []
     for player_index in constants.PLAYERS:
@@ -104,7 +103,7 @@ def get_team_stats():
             if select_team_index in range(1,4):
                 team_list = format_teams()
                 print_team_stats(select_team_index, team_list)
-                run_app()
+                break
             else:
                 print("Sorry but needs to be either 1,2 or 3")
         except:
@@ -112,16 +111,19 @@ def get_team_stats():
 
 
 def quit_or_continue():
-    response = int(input("Enter an option > "))
-    if response == 1:
-        print_teams()
-        get_team_stats()
-    else:
-        print("Thanks for checking out the teams.")
+    while True:
+        prints_intro_message()
+        response = int(input("Enter an option > "))
+        if response == 1:
+            print_teams()
+            get_team_stats()
+        elif response == 2:
+            print("Thanks for checking out the teams.")
+        else:
+            break
 
 
 def run_app():
-    prints_intro_message()
     while True:
         try:
             quit_or_continue()
