@@ -123,11 +123,7 @@ def quit_or_continue():
         elif response == 2:
             print("Thanks for checking out the teams.")
             break
-<<<<<<< HEAD
-        elif response != 1 or response != 2:
-=======
         elif response != 1 or response !=2:
->>>>>>> f63c4ab2921d4944b8df3529a5d26c3f29010ace
             print("Please select 1 or 2")
 
 
