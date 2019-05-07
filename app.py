@@ -1,7 +1,8 @@
 import constants
-
+from utilities import return_bool, return_integer
 
 def prints_intro_message():
+    """Prints intro message"""
     basketball_emoji = "\U0001F3C0"
     print("""
     {basketball} BASKETBALL TEAM STATS TOOL {basketball}
@@ -12,17 +13,36 @@ def prints_intro_message():
     """.format(basketball = basketball_emoji))
 
 
-def return_bool(experience):
-    """Returns a bool depending experience arg passed in"""
-    if experience.upper() == "YES":
-        return True
-    return False
+def print_team_stats(index,team):
+    """Takes two arguments and prints team stats"""
+    player_names_dict = get_player_info(team[index - 1])
+    team_name = constants.TEAMS[index - 1]
+    print("""
+Team: {} Stats
+--------------------
+Total Players: {}
+Players on Team:
+  {}
+ Experienced Players: {}
+ Inexperienced Players: {}
+ Average Height: {}
+    """.format(
+    team_name, len(player_names_dict["names"]),
+    ', '.join(player_names_dict["names"]),
+    len(player_names_dict["experienced_players"]),
+    len(player_names_dict["inexperienced_players"]),
+    player_names_dict["heights"]))
 
-def return_integer(value):
-    return int(value.split()[0:1][0])
+
+def print_teams():
+    """Prints out team names"""
+    print("\n")
+    for index, team in enumerate(constants.TEAMS):
+        print(f"{index + 1}) {team}")
 
 
 def format_players_dict():
+    """Creates new dictionary with imported file"""
     inexperienced_players = []
     experienced_players = []
     for player_index in constants.PLAYERS:
@@ -43,13 +63,8 @@ def format_players_dict():
     return experienced_players + inexperienced_players
 
 
-def print_teams():
-    print("\n")
-    for index, team in enumerate(constants.TEAMS):
-        print(f"{index + 1}) {team}")
-
-
 def format_teams():
+    """Creates list of experienced and inexperienced players"""
     player_list = format_players_dict()
     experienced_players = player_list[:9]
     inexperienced_players = player_list[9:]
@@ -57,6 +72,7 @@ def format_teams():
 
 
 def get_player_info(team):
+    """Returns player dictionary for print team stats"""
     player_dict = {
     "names":[],
     "inexperienced_players": [],
@@ -78,27 +94,11 @@ def get_player_info(team):
     return player_dict
 
 
-def print_team_stats(index,team):
-    player_names_dict = get_player_info(team[index - 1])
-    team_name = constants.TEAMS[index - 1]
-    print("""
-Team: {} Stats
---------------------
-Total Players: {}
-Players on Team:
-  {}
- Experienced Players: {}
- Inexperienced Players: {}
- Average Height: {}
-    """.format(
-    team_name, len(player_names_dict["names"]),
-    ', '.join(player_names_dict["names"]),
-    len(player_names_dict["experienced_players"]),
-    len(player_names_dict["inexperienced_players"]),
-    player_names_dict["heights"]))
+
 
 
 def get_team_stats():
+    """Prompts user for input"""
     while True:
         try:
             print("\n")
@@ -114,6 +114,7 @@ def get_team_stats():
 
 
 def quit_or_continue():
+    """Continously runs until user selects option"""
     while True:
         prints_intro_message()
         response = int(input("Enter an option > "))
@@ -128,6 +129,7 @@ def quit_or_continue():
 
 
 def run_app():
+    """Contains all functionality"""
     while True:
         try:
             quit_or_continue()
