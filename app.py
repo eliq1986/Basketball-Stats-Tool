@@ -14,15 +14,23 @@ Team: {} Stats
 Total Players: {}
 Players on Team:
   {}
+
+ Player Guardians:
+  {}
+
  Experienced Players: {}
+
  Inexperienced Players: {}
+
  Average Height: {}
     """.format(
     team_name, len(player_names_dict["names"]),
-    ', '.join(player_names_dict["names"]),
+    ' , '.join(player_names_dict["names"]),
+    ' , '.join(player_names_dict["guardians"]),
     len(player_names_dict["experienced_players"]),
     len(player_names_dict["inexperienced_players"]),
     player_names_dict["heights"]))
+
 
 def format_players_dict():
     """Creates new dictionary with imported constant.PLAYERS file"""
@@ -37,7 +45,8 @@ def format_players_dict():
             elif key == "experience":
                 player_dict[key] = return_bool(value)
             elif key == "guardians":
-                 player_dict[key] = value.split("and")
+                 splitted_guardians = ','.join(value.split("and"))
+                 player_dict[key] = splitted_guardians.rstrip()
             else:
                 player_dict[key] = value
         if player_dict["experience"] == False:
@@ -63,8 +72,8 @@ def get_player_info(team):
     "names":[],
     "inexperienced_players": [],
     "experienced_players":[],
-    "heights": 0
-
+    "heights": 0,
+    "guardians":[]
     }
     for index in team:
         for key,value in index.items():
@@ -74,18 +83,23 @@ def get_player_info(team):
                 player_dict["experienced_players"].append(index)
             elif key == "experience" and value == False:
                 player_dict["inexperienced_players"].append(index)
+            if key == "guardians":
+                player_dict["guardians"].append(value)
             if key == "height":
                 player_dict["heights"] += value
     player_dict["heights"] = get_average_height(player_dict, team)
     return player_dict
 
+
 def get_average_height(player_dict, team):
-    print(player_dict["heights"] // len(team))
+    """takes two args and returns int"""
+
     return player_dict["heights"] // len(team)
 
 
 def get_team_stats():
     """Prompts user for team selection"""
+
     while True:
         try:
             print("\n")
@@ -102,6 +116,7 @@ def get_team_stats():
 
 def quit_or_continue():
     """Continously runs until user selects option"""
+
     while True:
         prints_intro_message()
         response = int(input("Enter an option > "))
@@ -117,6 +132,7 @@ def quit_or_continue():
 
 def run_app():
     """Contains all functionality"""
+
     while True:
         try:
             quit_or_continue()
