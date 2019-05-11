@@ -1,20 +1,11 @@
 import constants
 from utilities import return_bool, return_integer
-
-def prints_intro_message():
-    """Prints intro message"""
-    basketball_emoji = "\U0001F3C0"
-    print("""
-    {basketball} BASKETBALL TEAM STATS TOOL {basketball}
-             --- Menu ---
-    Here are your choices:
-     1) Display Team Stats
-     2) Quit
-    """.format(basketball = basketball_emoji))
+from print_functions import prints_intro_message, print_teams
 
 
 def print_team_stats(index,team):
     """Takes two arguments and prints team stats"""
+
     player_names_dict = get_player_info(team[index - 1])
     team_name = constants.TEAMS[index - 1]
     print("""
@@ -33,16 +24,9 @@ Players on Team:
     len(player_names_dict["inexperienced_players"]),
     player_names_dict["heights"]))
 
-
-def print_teams():
-    """Prints out team names"""
-    print("\n")
-    for index, team in enumerate(constants.TEAMS):
-        print(f"{index + 1}) {team}")
-
-
 def format_players_dict():
-    """Creates new dictionary with imported file"""
+    """Creates new dictionary with imported constant.PLAYERS file"""
+
     inexperienced_players = []
     experienced_players = []
     for player_index in constants.PLAYERS:
@@ -65,6 +49,7 @@ def format_players_dict():
 
 def format_teams():
     """Creates list of experienced and inexperienced players"""
+
     player_list = format_players_dict()
     experienced_players = player_list[:9]
     inexperienced_players = player_list[9:]
@@ -73,6 +58,7 @@ def format_teams():
 
 def get_player_info(team):
     """Returns player dictionary for print team stats"""
+
     player_dict = {
     "names":[],
     "inexperienced_players": [],
@@ -90,15 +76,16 @@ def get_player_info(team):
                 player_dict["inexperienced_players"].append(index)
             if key == "height":
                 player_dict["heights"] += value
-    player_dict["heights"] = player_dict["heights"] // len(team)
+    player_dict["heights"] = get_average_height(player_dict, team)
     return player_dict
 
-
-
+def get_average_height(player_dict, team):
+    print(player_dict["heights"] // len(team))
+    return player_dict["heights"] // len(team)
 
 
 def get_team_stats():
-    """Prompts user for input"""
+    """Prompts user for team selection"""
     while True:
         try:
             print("\n")
@@ -124,8 +111,8 @@ def quit_or_continue():
         elif response == 2:
             print("Thanks for checking out the teams.")
             break
-        elif response != 1 or response !=2:
-            print("Please select 1 or 2")
+        else:
+            print("\n **** Please select 1 or 2 ****")
 
 
 def run_app():
